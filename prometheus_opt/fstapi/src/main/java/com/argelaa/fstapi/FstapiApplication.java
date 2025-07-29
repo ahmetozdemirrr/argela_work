@@ -2,6 +2,7 @@ package com.argelaa.fstapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.retry.annotation.EnableRetry;
 
 /* 
 	bu notasyonla işaretlenmiş sınıf genelde entry point (main fonksiyonu)
@@ -23,6 +24,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 	gibi componentleri birleştirip tek seferde hepsini halleder.
 */
 @SpringBootApplication
+@EnableRetry
 public class FstapiApplication 
 {
 	public static void main(String[] args) 
@@ -30,3 +32,10 @@ public class FstapiApplication
 		SpringApplication.run(FstapiApplication.class, args);
 	}
 }
+
+/*
+	kafka
+	grafana
+
+	* prom, kafka mesaj gönderdiğinde scrap yapsın belirli zaman aralıklarıyla değil.
+ */

@@ -1,13 +1,13 @@
 package com.argelaa.fstapi.service;
 
 import com.argelaa.fstapi.model.Product;
+import com.argelaa.fstapi.repository.ProductRepository;
 
 import org.springframework.stereotype.Service; /* @Service notasyonunu kullanmak için */
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional; /* Bir değerin var olup olmadığını güvenli bir şekilde tutmak için */
-import java.util.concurrent.atomic.AtomicLong; /* Basit ID üretici */
 
 /* 
 	@Service ile Spring Boot'a bu sınıfın bir iş mantığı (service) olduğunu
@@ -16,21 +16,17 @@ import java.util.concurrent.atomic.AtomicLong; /* Basit ID üretici */
 @Service
 public class ProductService
 {
-	/* ürünleri arrayList olarak saklayacağız */
-	private final List<Product> products = new ArrayList<>();
-	/* her ürüne benzersiz bir id üretir */
-	private final AtomicLong counter = new AtomicLong();
+	private final ProductRepository productRepository;
 
-	public ProductService()
+	@Autowired
+	public ProductService(ProductRepository productRepository)
 	{
-		products.add(new Product(counter.incrementAndGet(), "Laptop", 1200.00));
-		products.add(new Product(counter.incrementAndGet(), "Mouse",    25.00));
-		products.add(new Product(counter.incrementAndGet(), "Keyboard", 75.00));
+		this.productRepository = productRepository;
 	}
 
 	public List<Product> getAllProducts()
 	{
-		return products;
+		return productRepository.findAll();
 	}
 
 	/*
@@ -43,10 +39,7 @@ public class ProductService
 	*/
 	public Optional<Product> getProductById(Long id)
 	{
-		return products
-				.stream()
-				.filter(p -> p.getId().equals(id))
-				.findFirst();
+		return productRepository.findById(id);
 
 		/*
 			Optional, map(), orElse(), ifPresent() gibi kendi metotlarına sahiptir. 
@@ -84,32 +77,30 @@ public class ProductService
 	/* Create */
 	public Product addProduct(Product product)
 	{
-		product.setId(counter.incrementAndGet());
-		products.add(product);
-
-		return product;
+		return productRepository.save(product);
 	}
 
 	/* Update */
 	public Optional<Product> updateProduct(Long id, Product updatedProduct)
 	{
-		Optional<Product> existingProductOpt = getProductById(id);
-
-		if (existingProductOpt.isPresent()) {
-			Product existingProduct = existingProductOpt.get();
-
+		return productRepository.findById(id).map(existingProduct -> {
 			existingProduct.setName(updatedProduct.getName());
 			existingProduct.setPrice(updatedProduct.getPrice());
+			existingProduct.setQuantity(updatedProduct.getQuantity());
+			existingProduct.setCategory(updatedProduct.getCategory());
 
-			return Optional.of(existingProduct);
-		}
-		return Optional.empty();
+			return productRepository.save(existingProduct); // Güncellenmiş ürünü veritabanına kaydediyoruz
+		});
 	}
 
 	/* Delete */
 	public boolean deleteProduct(Long id)
 	{
-		return products.removeIf(p -> p.getId().equals(id));
+		if (productRepository.existsById(id)) { // Ürünün veritabanında var olup olmadığını kontrol ediyoruz
+			productRepository.deleteById(id); // ID'ye göre ürünü veritabanından siliyoruz
+			return true;
+		}
+		return false;
 	}
 }
 
