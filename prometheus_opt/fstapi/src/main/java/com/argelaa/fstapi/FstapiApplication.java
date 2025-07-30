@@ -34,8 +34,8 @@ public class FstapiApplication
 }
 
 /*
-	kafka
+	kafka *
 	grafana
 
-	* prom, kafka mesaj gönderdiğinde scrap yapsın belirli zaman aralıklarıyla değil.
+	promotheus, kafka mesaj gönderdiğinde scraping yapsın, belirli zaman aralıklarıyla değil.
  */

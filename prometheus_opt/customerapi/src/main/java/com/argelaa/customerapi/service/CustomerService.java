@@ -4,6 +4,7 @@ import com.argelaa.customerapi.model.Customer;
 import com.argelaa.customerapi.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,6 +66,7 @@ public class CustomerService
         return false;
     }
 
+    @Transactional
     public Optional<Customer> recordPurchase(Long customerId, Long quantityBought, Double pricePerUnit)
     {
         return customerRepository.findById(customerId).map(customer -> {
