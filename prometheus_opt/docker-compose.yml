@@ -12,6 +12,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
       - ./db-init/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db-init/customers_init.sql:/docker-entrypoint-initdb.d/customers_init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
       timeout: 20s
@@ -24,19 +25,39 @@ services:
       dockerfile: Dockerfile
     container_name: fstapi-service
     ports:
-      - "${FSTAPI_PORT}:${FSTAPI_PORT}"
+      - "${FSTAPI_PORT}:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
       SPRING_JPA_SHOW_SQL: 'true'
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQLDialect
       SPRING_JPA_OPEN_IN_VIEW: 'false'
-      SERVER_PORT: ${FSTAPI_PORT}
+      SERVER_PORT: 8080
     depends_on:
       mysql-db:
         condition: service_healthy
+
+  customerapi:
+      build:
+        context: ./customerapi
+        dockerfile: Dockerfile
+      container_name: customer-service-app
+      ports:
+        - "${CUSTOMERAPI_PORT}:8080"
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+        SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+        SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD}
+        SPRING_JPA_HIBERNATE_DDL_AUTO: create
+        SPRING_JPA_SHOW_SQL: 'true'
+        SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQLDialect
+        SPRING_JPA_OPEN_IN_VIEW: 'false'
+        SERVER_PORT: 8080
+      depends_on:
+        mysql-db:
+          condition: service_healthy
 
 volumes:
   mysql-data:
