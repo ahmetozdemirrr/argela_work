@@ -1,22 +1,63 @@
-package com.argelaa.common; // veya senin belirlediğin ortak paket
+package com.argelaa.common;
 
 public class OrderPlacedEvent {
     private Long productId;
     private Long customerId;
-    private int quantity;
-    private double pricePerUnit; // Bu alanı da ekleyebilirsin
+    private Long quantityBought; // Alan adı ve tipi 'customer-service' ile uyumlu hale getirildi.
+    private double pricePerUnit;
 
-    // JSON dönüşümü için boş constructor GEREKLİ
+    // JSON serileştirme/deserileştirme için varsayılan constructor
     public OrderPlacedEvent() {
     }
 
-    // Getter ve Setter'lar
-    public Long getProductId() { return productId; }
-    public void setProductId(Long productId) { this.productId = productId; }
-    public Long getCustomerId() { return customerId; }
-    public void setCustomerId(Long customerId) { this.customerId = customerId; }
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
-    public double getPricePerUnit() { return pricePerUnit; }
-    public void setPricePerUnit(double pricePerUnit) { this.pricePerUnit = pricePerUnit; }
+    // Servis içinde kolay nesne oluşturmak için yeni constructor
+    public OrderPlacedEvent(Long productId, Long customerId, Long quantityBought, double pricePerUnit) {
+        this.productId = productId;
+        this.customerId = customerId;
+        this.quantityBought = quantityBought;
+        this.pricePerUnit = pricePerUnit;
+    }
+
+    // Getter ve Setter metotları
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
+
+    public Long getQuantityBought() {
+        return quantityBought;
+    }
+
+    public void setQuantityBought(Long quantityBought) {
+        this.quantityBought = quantityBought;
+    }
+
+    public double getPricePerUnit() {
+        return pricePerUnit;
+    }
+
+    public void setPricePerUnit(double pricePerUnit) {
+        this.pricePerUnit = pricePerUnit;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderPlacedEvent{" +
+                "productId=" + productId +
+                ", customerId=" + customerId +
+                ", quantityBought=" + quantityBought +
+                ", pricePerUnit=" + pricePerUnit +
+                '}';
+    }
 }
