@@ -25,10 +25,6 @@ public class KafkaConsumerService
         logger.info(String.format("Alınan sipariş olayı: %s", event));
 
         /* musteri verilerini guncellemek için CustomerService'i cagir */
-        customerService.recordPurchase(
-                event.getCustomerId(),
-                event.getQuantityBought(),
-                event.getPricePerUnit()
-        );
+        customerService.handleOrderPlaced(event);
     }
 }

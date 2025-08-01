@@ -9,7 +9,7 @@ scrape_configs:
   - job_name: 'spring-actuator'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['fstapi-service:8080', 'customer-service-app:8080']
+      - targets: ['fstapi-service:8080', 'customer-service-app:8081']
 
   - job_name: 'kafka-broker'
     static_configs:

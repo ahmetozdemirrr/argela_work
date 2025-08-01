@@ -44,7 +44,6 @@ services:
       - zookeeper
     volumes:
       - kafka-data:/var/lib/kafka/data
-      # --- EKSİK OLAN VE HATAYI ÇÖZECEK SATIR ---
       - ./prometheus/jmx_prometheus.yml:/etc/kafka/prometheus/jmx_prometheus.yml
     environment:
       KAFKA_BROKER_ID: 1
@@ -81,7 +80,7 @@ services:
       dockerfile: Dockerfile
     container_name: customer-service-app
     ports:
-      - "${CUSTOMERAPI_PORT}:8080"
+      - "${CUSTOMERAPI_PORT}:8081"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://store-mysql-db:3306/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
