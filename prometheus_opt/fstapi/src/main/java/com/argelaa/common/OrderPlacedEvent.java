@@ -5,17 +5,19 @@ public class OrderPlacedEvent {
     private Long customerId;
     private Long quantityBought; // Alan adı ve tipi 'customer-service' ile uyumlu hale getirildi.
     private double pricePerUnit;
+    private String productCategory;
 
     // JSON serileştirme/deserileştirme için varsayılan constructor
     public OrderPlacedEvent() {
     }
 
     // Servis içinde kolay nesne oluşturmak için yeni constructor
-    public OrderPlacedEvent(Long productId, Long customerId, Long quantityBought, double pricePerUnit) {
+    public OrderPlacedEvent(Long productId, Long customerId, Long quantityBought, double pricePerUnit,  String productCategory) {
         this.productId = productId;
         this.customerId = customerId;
         this.quantityBought = quantityBought;
         this.pricePerUnit = pricePerUnit;
+        this.productCategory = productCategory;
     }
 
     // Getter ve Setter metotları
@@ -29,6 +31,14 @@ public class OrderPlacedEvent {
 
     public Long getCustomerId() {
         return customerId;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
     }
 
     public void setCustomerId(Long customerId) {
@@ -58,6 +68,7 @@ public class OrderPlacedEvent {
                 ", customerId=" + customerId +
                 ", quantityBought=" + quantityBought +
                 ", pricePerUnit=" + pricePerUnit +
+                ", productCategory='" + productCategory + '\'' +
                 '}';
     }
 }

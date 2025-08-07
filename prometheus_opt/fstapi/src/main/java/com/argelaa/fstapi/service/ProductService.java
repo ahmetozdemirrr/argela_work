@@ -42,24 +42,22 @@ public class ProductService {
 	@Transactional
 	public Optional<Product> purchaseProduct(Long productId, Long customerId, Long quantity) {
 		return productRepository.findById(productId).flatMap(product -> {
-			// Stok kontrolü
 			if (product.getQuantity() >= quantity) {
-				// Ürün stoğunu güncelle
 				product.setQuantity(product.getQuantity() - quantity);
 				Product updatedProduct = productRepository.save(product);
 
-				// Kafka'ya olayı gönder (Düzeltilmiş nesne ile)
+				// Kafka'ya olayı gönder (Kategori bilgisi eklendi)
 				OrderPlacedEvent event = new OrderPlacedEvent(
 						productId,
 						customerId,
-						quantity, // Bu değer 'quantityBought' alanına atanacak
-						product.getPrice()
+						quantity,
+						product.getPrice(),
+						product.getCategory()
 				);
 				kafkaProducerService.sendOrderEvent(event);
 
 				return Optional.of(updatedProduct);
 			} else {
-				// Yeterli stok yoksa işlemi reddet ve boş Optional döndür
 				System.out.println("Stok yetersiz. Talep edilen: " + quantity + ", Mevcut: " + product.getQuantity());
 				return Optional.empty();
 			}

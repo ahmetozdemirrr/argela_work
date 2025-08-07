@@ -7,17 +7,19 @@ public class OrderPlacedEvent
     private Long customerId;
     private Long quantityBought;
     private Double pricePerUnit;
+    private String productCategory;
 
     public OrderPlacedEvent()
     {
     }
 
-    public OrderPlacedEvent(Long productId, Long customerId, Long quantityBought, Double pricePerUnit)
+    public OrderPlacedEvent(Long productId, Long customerId, Long quantityBought, Double pricePerUnit, String productCategory)
     {
         this.productId = productId;
         this.customerId = customerId;
         this.quantityBought = quantityBought;
         this.pricePerUnit = pricePerUnit;
+        this.productCategory = productCategory;
     }
 
     public Long getProductId()
@@ -40,6 +42,10 @@ public class OrderPlacedEvent
         return pricePerUnit;
     }
 
+    public String getProductCategory() {
+        return productCategory;
+    }
+
     public void setProductId(Long productId)
     {
         this.productId = productId;
@@ -60,6 +66,10 @@ public class OrderPlacedEvent
         this.pricePerUnit = pricePerUnit;
     }
 
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+    }
+
     @Override
     public String toString()
     {
@@ -68,6 +78,7 @@ public class OrderPlacedEvent
                 ", customerId=" + customerId +
                 ", quantityBought=" + quantityBought +
                 ", pricePerUnit=" + pricePerUnit +
+                ", productCategory='" + productCategory + '\'' +
                 '}';
     }
 }
