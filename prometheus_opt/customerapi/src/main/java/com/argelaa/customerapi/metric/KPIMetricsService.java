@@ -177,7 +177,6 @@ public class KPIMetricsService {
     public void recordWorkflowWaitingTime(String workflowItem, long waitingTimeInSeconds) {
         workflowWaitingTimes.computeIfAbsent(workflowItem, k -> new AtomicLong(0))
                 .addAndGet(waitingTimeInSeconds);
-
         // Create gauge for this workflow item if not exists
         Gauge.builder("kpi_workflow_waiting_time_seconds", workflowItem, this::getWorkflowWaitingTime)
                 .description("Total waiting time in workflow item")

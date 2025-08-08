@@ -20,6 +20,9 @@ public class Complaint {
     @Column(nullable = false)
     private String status = "OPEN"; // Varsayılan durum
 
+    @Column(length = 100)
+    private String complaintType; // YENİ EKLENDİ
+
     private Double handlingTimeSeconds; // Şikayetin çözülme süresi (saniye)
 
     @Column(updatable = false)
@@ -27,7 +30,7 @@ public class Complaint {
 
     private LocalDateTime resolvedAt;
 
-    // Getters and Setters
+    // Getters and Setters...
     public Long getId() {
         return id;
     }
@@ -58,6 +61,14 @@ public class Complaint {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getComplaintType() {
+        return complaintType;
+    }
+
+    public void setComplaintType(String complaintType) {
+        this.complaintType = complaintType;
     }
 
     public Double getHandlingTimeSeconds() {

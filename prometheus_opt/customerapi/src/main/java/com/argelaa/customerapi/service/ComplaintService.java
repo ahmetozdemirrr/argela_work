@@ -51,6 +51,12 @@ public class ComplaintService {
         double handlingTime = 5 + (115 * random.nextDouble());
         complaint.setHandlingTimeSeconds(handlingTime);
 
+        // YENİ EKLENDİ: Şikayet tipini de kaydet
+        if (complaint.getComplaintType() != null && !complaint.getComplaintType().isEmpty()) {
+            complaint.setComplaintType(complaint.getComplaintType());
+        }
+
+
         Complaint resolvedComplaint = complaintRepository.save(complaint);
 
         // KPI 2: Tamamlanan şikayet sayısını artır
@@ -58,6 +64,11 @@ public class ComplaintService {
 
         // KPI 3 & 4: Şikayet işleme süresini kaydet
         kpiMetricsService.recordComplaintHandlingTime(handlingTime);
+
+        // YENİ EKLENDİ: KPI 6 & 7: Şikayet tipine göre işleme süresini kaydet
+        if (resolvedComplaint.getComplaintType() != null) {
+            kpiMetricsService.recordComplaintHandlingTimeByType(resolvedComplaint.getComplaintType(), handlingTime);
+        }
 
         return Optional.of(resolvedComplaint);
     }
