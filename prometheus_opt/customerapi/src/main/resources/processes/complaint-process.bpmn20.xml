@@ -9,7 +9,11 @@
 
     <process id="complaintProcess" name="Simple Complaint Process" isExecutable="true">
         <startEvent id="start"/>
-        <sequenceFlow sourceRef="start" targetRef="end"/>
+        <sequenceFlow sourceRef="start" targetRef="waitStep"/>
+
+        <userTask id="waitStep" name="Wait for Review"/>
+
+        <sequenceFlow sourceRef="waitStep" targetRef="end"/>
         <endEvent id="end"/>
     </process>
 
