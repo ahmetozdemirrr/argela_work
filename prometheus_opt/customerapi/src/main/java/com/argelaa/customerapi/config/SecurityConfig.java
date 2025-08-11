@@ -35,7 +35,7 @@ public class SecurityConfig {
                         .requestMatchers(new MvcRequestMatcher(introspector, "/swagger-ui.html")).permitAll()
                         .requestMatchers(new MvcRequestMatcher(introspector, "/api/**")).permitAll()
                         .requestMatchers(new MvcRequestMatcher(introspector, "/actuator/**")).permitAll()
-
+                        .requestMatchers(new MvcRequestMatcher(introspector, "/process-api/**")).permitAll()
                         // Diğer tüm istekler için authentication gerekli
                         .anyRequest().authenticated()
                 );
